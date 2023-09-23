@@ -1,6 +1,12 @@
 <h1 align="center">web-push</h1>
 
-[![Build Status](https://github.com/web-push-libs/web-push/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/web-push-libs/web-push/actions/workflows/ci.yml)
+# Why modified from original "web-push"
+
+I shrunk to incorporate it into the application server.
+I also minimized dependencies and expanded several libraries inline, especially those that do not conflict with the license.
+
+The following is a modified version of the original README.
+Most of the content is also effective for web-push-min
 
 # Why
 
@@ -14,17 +20,18 @@ for browsers relying on GCM for message sending / delivery.
 
 # Install
 
-Installation is simple, just install via npm.
-
-    npm install web-push --save
-
+~~Installation is simple, just install via npm.~~
+<!--
+    npm install web-push-min --save
+-->
 # Usage
 
 The common use case for this library is an application server using
 a GCM API key and VAPID keys.
 
 ```javascript
-const webpush = require('web-push');
+
+import { webpush } from 'web-push-min';
 
 // VAPID keys should be generated only once.
 const vapidKeys = webpush.generateVAPIDKeys();
@@ -60,50 +67,6 @@ registration.pushManager.subscribe({
 });
 ```
 
-## Command Line
-
-You can install `web-push` globally and use it for sending notifications
-and / or generating VAPID keys.
-
-Install like so:
-
-    npm install web-push -g
-
-Then you can run the following commands:
-
-    Usage:
-
-      web-push send-notification --endpoint=<url> [--key=<browser key>] [--auth=<auth secret>] [--payload=<message>] [--encoding=<aesgcm | aes128gcm>] [--ttl=<seconds>] [--vapid-subject=<vapid subject>] [--vapid-pubkey=<public key url base64>] [--vapid-pvtkey=<private key url base64>] [--proxy=<http proxy uri>] [--gcm-api-key=<api key>]
-
-      web-push generate-vapid-keys [--json]
-
-  Example of send notification:
-  ```shell
-    > web-push generate-vapid-keys --json
-    > {"publicKey":"BGtkbcjrO12YMoDuq2sCQeHlu47uPx3SHTgFKZFYiBW8Qr0D9vgyZSZPdw6_4ZFEI9Snk1VEAj2qTYI1I1YxBXE","privateKey":"I0_d0vnesxbBSUmlDdOKibGo6vEXRO-Vu88QlSlm5j0"}
-  ```
-   The subscription value:
-  ```javascript
-    { 
-      "endpoint": "https://fcm.googleapis.com/fcm/send/d61c5u920dw:APA91bEmnw8utjDYCqSRplFMVCzQMg9e5XxpYajvh37mv2QIlISdasBFLbFca9ZZ4Uqcya0ck-SP84YJUEnWsVr3mwYfaDB7vGtsDQuEpfDdcIqOX_wrCRkBW2NDWRZ9qUz9hSgtI3sY", 
-      "expirationTime": null, 
-      "keys": { 
-        "p256dh": "BL7ELU24fJTAlH5Kyl8N6BDCac8u8li_U5PIwG963MOvdYs9s7LSzj8x_7v7RFdLZ9Eap50PiiyF5K0TDAis7t0", 
-        "auth": "juarI8x__VnHvsOgfeAPHg" 
-      } 
-    }
-  ```
-  The command example:
-  ```shell
-    web-push send-notification  \
-    --endpoint=https://fcm.googleapis.com/fcm/send/d61c5u920dw:APA91bEmnw8utjDYCqSRplFMVCzQMg9e5XxpYajvh37mv2QIlISdasBFLbFca9ZZ4Uqcya0ck-SP84YJUEnWsVr3mwYfaDB7vGtsDQuEpfDdcIqOX_wrCRkBW2NDWRZ9qUz9hSgtI3sY \
-    --key=BL7ELU24fJTAlH5Kyl8N6BDCac8u8li_U5PIwG963MOvdYs9s7LSzj8x_7v7RFdLZ9Eap50PiiyF5K0TDAis7t0 \
-    --auth=juarI8x__VnHvsOgfeAPHg \
-    --vapid-subject=mailto:example@qq.com \
-    --vapid-pubkey=BGtkbcjrO12YMoDuq2sCQeHlu47uPx3SHTgFKZFYiBW8Qr0D9vgyZSZPdw6_4ZFEI9Snk1VEAj2qTYI1I1YxBXE \
-    --vapid-pvtkey=I0_d0vnesxbBSUmlDdOKibGo6vEXRO-Vu88QlSlm5j0 \
-    --payload=Hello
-  ```  
 
 # API Reference
 
@@ -136,7 +99,6 @@ const options = {
   urgency:'< Default is "normal" >',
   topic:'< Use a maximum of 32 characters from the URL or filename-safe Base64 characters sets. >',
 
-  proxy: '< proxy server options >',
   agent: '< https.Agent instance >'
 }
 
@@ -188,10 +150,12 @@ retained by the push service (by default, four weeks).
 - **contentEncoding** is the type of push encoding to use (e.g. 'aes128gcm', by default, or 'aesgcm').
 - **urgency** is to indicate to the push service whether to send the notification immediately or prioritize the recipient’s device power considerations for delivery. Provide one of the following values: very-low, low, normal, or high. To attempt to deliver the notification immediately, specify high.
 - **topic** optionally provide an identifier that the push service uses to coalesce notifications. Use a maximum of 32 characters from the URL or filename-safe Base64 characters sets.
+<!--
 - **proxy** is the [HttpsProxyAgent's constructor argument](https://github.com/TooTallNate/node-https-proxy-agent#new-httpsproxyagentobject-options)
 that may either be a string URI of the proxy server (eg. http://< hostname >:< port >)
 or an "options" object with more specific properties.
-- **agent** is the [HTTPS Agent instance](https://nodejs.org/dist/latest/docs/api/https.html#https_class_https_agent) which will be used in the `https.request` method. If the `proxy` options defined, `agent` will be ignored!
+-->
+- **agent** is the [HTTPS Agent instance](https://nodejs.org/dist/latest/docs/api/https.html#https_class_https_agent) which will be used in the `https.request` method. <!--If the `proxy` options defined, `agent` will be ignored!-->
 
 > **Note:** As of this writing, if a push notification request contains a VAPID `subject` referencing an `https://localhost` URI (set either using the `options` argument or via the global `setVapidDetails()` method), Safari's push notification endpoint rejects the request with a `BadJwtToken` error.
 
@@ -392,7 +356,6 @@ const options = {
   contentEncoding: '< Encoding type, e.g.: aesgcm or aes128gcm >',
   urgency:'< Default is normal "Defult" >',
   topic:'< Use a maximum of 32 characters from the URL or filename-safe Base64 characters sets. >',
-  proxy: '< proxy server options >'
 }
 
 try {
@@ -448,9 +411,11 @@ retained by the push service (by default, four weeks).
 - **contentEncoding** is the type of push encoding to use (e.g. 'aesgcm', by default, or 'aes128gcm').
 - **urgency** is to indicate to the push service whether to send the notification immediately or prioritize the recipient’s device power considerations for delivery. Provide one of the following values: very-low, low, normal, or high. To attempt to deliver the notification immediately, specify high.
 - **topic** optionally provide an identifier that the push service uses to coalesce notifications. Use a maximum of 32 characters from the URL or filename-safe Base64 characters sets.
+<!--
 - **proxy** is the [HttpsProxyAgent's constructor argument](https://github.com/TooTallNate/node-https-proxy-agent#new-httpsproxyagentobject-options)
 that may either be a string URI of the proxy server (eg. http://< hostname >:< port >)
 or an "options" object with more specific properties.
+-->
 
 ### Returns
 
@@ -584,16 +549,10 @@ Also, the [Service Worker Cookbook](https://github.com/mdn/serviceworker-cookboo
 examples using this library.
 
 # Running tests
+None
 
-> Prerequisites:
->  * Java JDK or JRE (http://www.oracle.com/technetwork/java/javase/downloads/index.html)
-
-To run tests:
-
-    npm test
-
-<p align="center">
+<!--p align="center">
   <a href="https://www.npmjs.com/package/web-push">
     <img src="https://nodei.co/npm/web-push.svg?downloads=true" />
   </a>
-</p>
+</p-->
