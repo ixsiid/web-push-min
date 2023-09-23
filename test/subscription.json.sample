@@ -1,0 +1,7 @@
+{
+	"endpoint": "https://hogehoge.com/api/{{identified token}}",
+	"keys": {
+		"auth": "your auth key",
+		"p256dh": "p256dh key"
+	}
+}

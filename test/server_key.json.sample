@@ -1,0 +1,4 @@
+{
+	"public": "Your server's VAPID PUBLIC KEY",
+	"private": "Your server's VAPID PRIVATE KEY"
+}
